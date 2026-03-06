@@ -53,7 +53,7 @@ const displayAllIssue = (issues) => {
                     </div>
                     <h1 class="text-2xl font-semibold">${issue.title}</h1>
                     <p class="text-lg font-medium text-gray-400">${issue.description}</p>
-                    <div class="flex gap-3 items-center">
+                    <div class="inline-block space-y-2 md:flex gap-3 items-center ">
                         <p
                             class="bg-red-100 text-red-500 font-medium text-xl px-2 py-1 rounded-lg border border-red-500">
                             ${issue.labels[0]}</p>
