@@ -41,7 +41,7 @@ const closedIssueContainer = document.getElementById("closed-issues-container");
 // })
 
 btnContainer.addEventListener("click", async (e) => {
-    if(e.target.localName !== "button") return;
+    if (e.target.localName !== "button") return;
 
     const buttons = document.querySelectorAll(".btn-nav");
     buttons.forEach(btn => btn.classList.remove("btn-primary"));
@@ -62,17 +62,17 @@ btnContainer.addEventListener("click", async (e) => {
     displayAllIssue(data.data); // this will populate all, open, closed containers
 
     // show relevant container
-    if(tab === "All"){
+    if (tab === "All") {
         allIssueContainer.classList.remove("hidden");
         openIssueContainer.classList.add("hidden");
         closedIssueContainer.classList.add("hidden");
         updateIssueCount(allIssueContainer);
-    } else if(tab === "Open"){
+    } else if (tab === "Open") {
         allIssueContainer.classList.add("hidden");
         openIssueContainer.classList.remove("hidden");
         closedIssueContainer.classList.add("hidden");
         updateIssueCount(openIssueContainer);
-    } else if(tab === "Closed"){
+    } else if (tab === "Closed") {
         allIssueContainer.classList.add("hidden");
         openIssueContainer.classList.add("hidden");
         closedIssueContainer.classList.remove("hidden");
@@ -202,11 +202,11 @@ const displayIssueDetails = (issue) => {
         <div class="bg-white rounded-xl p-5 space-y-4">
                     <div class="flex justify-between">
                         ${issue.status === "open" ? `<p class="font-medium text-xl px-2 py-1 bg-green-400 rounded-lg">${issue.status}</p>` :
-                `<p class="font-medium text-xl px-2 py-1 bg-red-400 rounded-lg">${issue.status}</p>`}
+            `<p class="font-medium text-xl px-2 py-1 bg-red-400 rounded-lg">${issue.status}</p>`}
                         <p class="px-3 py-1 rounded-lg font-medium border 
                             ${issue.priority === "high" ? 'bg-red-100 border-red-400 text-red-600' :
-                issue.priority === "medium" ? 'bg-yellow-100 border-yellow-400 text-yellow-600' :
-                    'bg-gray-300 border-gray-400 text-gray-700'}">
+            issue.priority === "medium" ? 'bg-yellow-100 border-yellow-400 text-yellow-600' :
+                'bg-gray-300 border-gray-400 text-gray-700'}">
                             ${issue.priority}
                          </p>
                     </div>
@@ -232,4 +232,64 @@ const displayIssueDetails = (issue) => {
     document.getElementById("my_modal_5").showModal()
 }
 
-loadAllIssue()
+loadAllIssue();
+
+// search oftin
+
+// document.getElementById("btn-search").addEventListener("click", () => {
+
+//     const input = document.getElementById("input-search");
+//     const searchValue = input.value.trim().toLowerCase();
+//     // console.log(searchValue)
+
+//     fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
+//         .then(res => res.json())
+//         .then(data => {
+//             const allWord = data.data;
+//             console.log(allWord)
+//             const filterWords = allWord.filter(word => word.word.toLowerCase().includes(searchValue))
+//             console.log(filterWords)
+
+//         })
+// })
+
+// search button click
+document.getElementById("btn-search").addEventListener("click", () => {
+    const input = document.getElementById("input-search");
+    const searchValue = input.value.trim();
+    searchIssues(searchValue);
+});
+
+// load search results
+const searchIssues = async (searchValue) => {
+    if (!searchValue) return;
+
+    managespinner(true);
+    await Promise.resolve();
+
+    try {
+        const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`);
+        const data = await res.json();
+
+        if (!data.data || data.data.length === 0) {
+            allIssueContainer.innerHTML = `<p class="text-center text-gray-500 text-xl mt-5">No results found for "${searchValue}"</p>`;
+            openIssueContainer.innerHTML = "";
+            closedIssueContainer.innerHTML = "";
+        } else {
+            displayAllIssue(data.data);
+        }
+
+        allIssueContainer.classList.remove("hidden");
+        openIssueContainer.classList.add("hidden");
+        closedIssueContainer.classList.add("hidden");
+        updateIssueCount(allIssueContainer);
+
+    } catch (err) {
+        console.error("Search failed:", err);
+        allIssueContainer.innerHTML = `<p class="text-center text-red-500 text-xl mt-5">Search failed. Try again!</p>`;
+        openIssueContainer.innerHTML = "";
+        closedIssueContainer.innerHTML = "";
+    } finally {
+        managespinner(false);
+    }
+}
