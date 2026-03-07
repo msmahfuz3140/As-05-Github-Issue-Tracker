@@ -21,24 +21,7 @@ const closedIssueContainer = document.getElementById("closed-issues-container");
 //         closedIssueContainer.classList.add("hidden")
 
 //         updateIssueCount(allIssueContainer)
-//     }
 
-//     if (e.target.innerText === "Open") {
-//         allIssueContainer.classList.add("hidden")
-//         openIssueContainer.classList.remove("hidden")
-//         closedIssueContainer.classList.add("hidden")
-
-//         updateIssueCount(openIssueContainer)
-//     }
-
-//     if (e.target.innerText === "Closed") {
-//         allIssueContainer.classList.add("hidden")
-//         openIssueContainer.classList.add("hidden")
-//         closedIssueContainer.classList.remove("hidden")
-
-//         updateIssueCount(closedIssueContainer)
-//     }
-// })
 
 btnContainer.addEventListener("click", async (e) => {
     if (e.target.localName !== "button") return;
@@ -135,7 +118,7 @@ const displayAllIssue = (issues) => {
 
 
     issues.forEach(issue => {
-        console.log(issue)
+        // console.log(issue)
         const card = document.createElement("div");
         card.innerHTML = `
         <div onclick="loadIssueDetail(${issue.id})" class="bg-white rounded-xl p-5 border-t-4 ${issue.status === "open" ? "border-t-green-500" : "border-t-purple-500"} space-y-4">
@@ -196,7 +179,7 @@ const loadIssueDetail = async (id) => {
     managespinner(false)
 }
 const displayIssueDetails = (issue) => {
-    console.log(issue)
+    // console.log(issue)
     const detailsBox = document.getElementById("details-container");
     detailsBox.innerHTML = `
         <div class="bg-white rounded-xl p-5 space-y-4">
@@ -234,31 +217,23 @@ const displayIssueDetails = (issue) => {
 
 loadAllIssue();
 
-// search oftin
+const input = document.getElementById("input-search"); // input field
+const search = document.getElementById("btn-search");  // button
 
-// document.getElementById("btn-search").addEventListener("click", () => {
-
-//     const input = document.getElementById("input-search");
-//     const searchValue = input.value.trim().toLowerCase();
-//     // console.log(searchValue)
-
-//     fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`)
-//         .then(res => res.json())
-//         .then(data => {
-//             const allWord = data.data;
-//             console.log(allWord)
-//             const filterWords = allWord.filter(word => word.word.toLowerCase().includes(searchValue))
-//             console.log(filterWords)
-
-//         })
-// })
-
-// search button click
-document.getElementById("btn-search").addEventListener("click", () => {
-    const input = document.getElementById("input-search");
-    const searchValue = input.value.trim();
-    searchIssues(searchValue);
+// button click listener
+search.addEventListener("click", () => {
+    const value = input.value.trim();
+    searchIssues(value);
 });
+
+// enter key listener on input field
+input.addEventListener("keydown", (e) => {
+    if(e.key === "Enter"){
+        const value = input.value.trim();
+        searchIssues(value);
+    }
+});
+
 
 // load search results
 const searchIssues = async (searchValue) => {
