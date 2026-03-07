@@ -1,4 +1,6 @@
-const btnContainer = document.getElementById("allBtnContainer")
+const btnContainer = document.getElementById("allBtnContainer");
+const openIssueContainer = document.getElementById("open-issues-container");
+const closedIssueContainer = document.getElementById("closed-issues-container");
 
 // btn select
 btnContainer.addEventListener("click", (e) => {
@@ -9,6 +11,32 @@ btnContainer.addEventListener("click", (e) => {
             btn.classList.remove("btn-primary")
         })
         e.target.classList.add("btn-primary")
+        
+    }
+
+    // selected tabs show cards
+    if (e.target.innerText === "All") {
+        allIssueContainer.classList.remove("hidden")
+        openIssueContainer.classList.add("hidden")
+        closedIssueContainer.classList.add("hidden")
+
+        updateIssueCount(allIssueContainer)
+    }
+
+    if (e.target.innerText === "Open") {
+        allIssueContainer.classList.add("hidden")
+        openIssueContainer.classList.remove("hidden")
+        closedIssueContainer.classList.add("hidden")
+
+        updateIssueCount(openIssueContainer)
+    }
+
+    if (e.target.innerText === "Closed") {
+        allIssueContainer.classList.add("hidden")
+        openIssueContainer.classList.add("hidden")
+        closedIssueContainer.classList.remove("hidden")
+
+        updateIssueCount(closedIssueContainer)
     }
 })
 
@@ -32,8 +60,22 @@ const allIssueCount = document.getElementById("issueCount");
 const calculateCount = () => {
     allIssueCount.innerText = allIssueContainer.children.length;
 }
+
+// update issue count
+const updateIssueCount = (container) => {
+    const count = container.children.length;
+    document.getElementById("issueCount").innerText = count;
+}
+
 const displayAllIssue = (issues) => {
-    // get the container
+    //empty all container
+    allIssueContainer.innerHTML = ""
+    openIssueContainer.innerHTML = ""
+    closedIssueContainer.innerHTML = ""
+
+    // count calculate
+    const openCount = issues.filter(issue => issue.status === "open").length
+    const closedCount = issues.filter(issue => issue.status === "closed").length
 
 
     issues.forEach(issue => {
@@ -43,11 +85,11 @@ const displayAllIssue = (issues) => {
         <div class="bg-white rounded-xl p-5 border-t-4 ${issue.status === "open" ? "border-t-green-500" : "border-t-purple-500"} space-y-4">
                     <div class="flex justify-between">
                         ${issue.status === "open" ? '<img class="w-8" src="./assets/Open-Status.png" alt=""></img>' :
-                        '<img class="w-8" src="./assets/Closed- Status .png" alt="">'}
+                '<img class="w-8" src="./assets/Closed- Status .png" alt="">'}
                         <p class="px-3 py-1 rounded-lg font-medium border 
                             ${issue.priority === "high" ? 'bg-red-100 border-red-400 text-red-600' :
-                              issue.priority === "medium" ? 'bg-yellow-100 border-yellow-400 text-yellow-600' :
-                             'bg-gray-300 border-gray-400 text-gray-700'}">
+                issue.priority === "medium" ? 'bg-yellow-100 border-yellow-400 text-yellow-600' :
+                    'bg-gray-300 border-gray-400 text-gray-700'}">
                             ${issue.priority}
                          </p>
                     </div>
@@ -70,9 +112,23 @@ const displayAllIssue = (issues) => {
 
 
         `
+        // append all card
         allIssueContainer.append(card)
+
+        // append open card
+        if (issue.status === "open") {
+            const openCard = card.cloneNode(true);
+            openIssueContainer.append(openCard);
+        }
+
+        // append closed card
+        if (issue.status === "closed") {
+            const closedCard = card.cloneNode(true);
+            closedIssueContainer.append(closedCard);
+        }
     });
     calculateCount();
+    updateIssueCount()
 
 }
 
