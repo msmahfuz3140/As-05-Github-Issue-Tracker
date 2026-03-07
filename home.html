@@ -32,15 +32,16 @@
 <body>
     <!-- navbar -->
     <header>
-        <div class="navbar bg-base-100 shadow-sm px-1 md:px-10 md:flex md:justify-between block justify-center items-center">
+        <div
+            class="navbar bg-base-100 shadow-sm px-1 md:px-10 md:flex md:justify-between block justify-center items-center">
             <div class="grid grid-cols-1 md:grid-cols-2 my-5">
                 <a class="btn btn-ghost text-xl">
                     <img class="w-10" src="./assets/github-logo.png" alt="">
                     <h1>GitHub Issues Tracker</h1>
                 </a>
             </div>
-            <div class="flex gap-2 justify-center items-center">
-                <input type="text" placeholder="Search Issues..." class="input input-bordered w-24 md:w-auto" />
+            <div class="flex gap-2 justify-center items-center px-8">
+                <input type="text" placeholder="Search Issues..." class="input input-bordered w-full md:w-auto" />
                 <div class="dropdown dropdown-end">
                     <div>
                         <button class="btn btn-primary">Search</button>
@@ -63,7 +64,8 @@
 
         <!-- all lessons count -->
         <section class="w-11/12 mx-auto mt-10">
-            <div id="lessonCountContainer" class="block md:flex justify-center md:justify-between bg-base-200 p-5 items-center rounded-xl">
+            <div id="lessonCountContainer"
+                class="block md:flex justify-center md:justify-between bg-base-200 p-5 items-center rounded-xl">
                 <div class="lesson-left flex gap-3">
                     <img class="w-10 h-10 md:w-12 md:h-12" src="./assets/Aperture.png" alt="">
                     <div>
@@ -85,8 +87,13 @@
             </div>
         </section>
 
+        <!-- loading spinner -->
+        <section id="spinner" class="flex justify-center items-center mt-8 hidden">
+            <span class="loading loading-spinner loading-xl"></span>
+        </section>
+
         <!-- load all issues -->
-        <section class="w-11/12 mx-auto mt-10">
+        <section id="issue-container" class="w-11/12 mx-auto mt-10">
             <div id="all-issues-container" class="grid grid-cols-1 md:grid-cols-4 gap-5 bg-base-200 rounded-xl p-8">
                 <!-- <div class="bg-white rounded-xl p-5 border-t-4 border-t-green-500 space-y-4">
                     <div class="flex justify-between">
@@ -118,6 +125,22 @@
             <div id="closed-issues-container"
                 class="hidden grid grid-cols-1 md:grid-cols-4 gap-5 bg-base-200 rounded-xl p-8"></div>
         </section>
+
+        <!-- Open the modal using ID.showModal() method -->
+        <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <div id="details-container" class="space-y-5">
+
+                </div>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn btn-primary px-5">Close</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
 
     </main>
 
